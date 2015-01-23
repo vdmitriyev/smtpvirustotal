@@ -1,0 +1,4 @@
+*.pyc
+smtpvirustotal/*.pyc
+smtpvirustotal/email_credentials.py
+smtpvirustotal/virustotal-email-report.txt
