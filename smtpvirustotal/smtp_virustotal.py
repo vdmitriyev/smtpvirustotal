@@ -114,7 +114,7 @@ class SenderProcessor:
             (str) -> (list)
         '''
         f_iterator = FolderIterator()
-        print '[i] Following folder will be processed %s' % root_folder
+        print '[i] Following folder will be processed %s \n' % root_folder
         folders = f_iterator.get_all_files(root_folder)
 
         _files_path = list()
@@ -136,6 +136,7 @@ class SenderProcessor:
 
         # iterating through files list, form e-mail with attachmetn, send
         for resource in files:
+            print resource
             thread = VirusTotalAttachmentSender(resource, q)
             threads.append(thread)
             thread.daemon = True
