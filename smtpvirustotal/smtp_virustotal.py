@@ -13,7 +13,9 @@ __date__    = "23.01.2015"
 __description__ = "Script send files as an attachment to the VirusTotal."
 
 
-SCAN_FOLDER = 'D:\\tmp\\random'
+# SCAN_FOLDER = 'd:\\Distr\\_misc\\_Misc\\test\\'
+SCAN_FOLDER = 'd:\\Distr\\_misc\\Images'
+
 
 import smtplib
 import Queue
@@ -47,7 +49,7 @@ class VirusTotalAttachmentSender(threading.Thread):
         self.q = q
         #print '[i] resource %s' % resource
 
-    def form_email_with_attachment(self, attachment):
+    def form_email_with_attachment(self, filename):
         '''
             Forms e-mail with attachment and returns it.
 
@@ -62,11 +64,11 @@ class VirusTotalAttachmentSender(threading.Thread):
         msg['Date'] = formatdate()
 
         # Open the file to scan in binary mode
-        fp = open(attachment, 'rb')
+        fp = open(filename, 'rb')
         attachment = MIMEBase('application', 'octet-stream')
         attachment.set_payload(fp.read())
         encoders.encode_base64(attachment)
-        attachment.add_header('Content-Disposition', 'attachment; filename="filename"')
+        attachment.add_header('Content-Disposition', 'attachment; filename="' + filename + '"')
         fp.close()
         msg.attach(attachment)
         print '[i] email with attachment was formed'
@@ -96,7 +98,7 @@ class VirusTotalAttachmentSender(threading.Thread):
             s.quit()
             self.q.put([self.resource, "e-mail sent"])
         except Exception, e:
-            print "[e] Error: unable to send email"
+            print '[e] Error: unable to send email'
             print '[e] Exception: %s' % str(e)
             self.q.put([self.resource, '[e] Exception: %s' % str(e)])
 
@@ -155,7 +157,7 @@ class SenderProcessor:
         while not q.empty():
             resource, msg = q.get()
             f_report.write("=== %s === \n" % (resource, ))
-            f_report.write("Msg: %s\n" % (msg, ))
+            f_report.write("Msg: \t\t%s\n" % (msg, ))
 
 def main():
     '''
