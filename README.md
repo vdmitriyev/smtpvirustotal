@@ -24,7 +24,7 @@ PASSWORD = '<password>'
 
 #### Dependencies
 
-* Python 2.7 is required - [download](http://www.python.org/download/)
+* (Python 2.7)[http://www.python.org/download/]
 
 #### Author
 
