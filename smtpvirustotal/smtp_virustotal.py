@@ -5,16 +5,16 @@ __author__     = "Viktor Dmitriyev"
 __copyright__ = "Copyright 2015, Viktor Dmitriyev"
 __credits__ = ["Viktor Dmitriyev"]
 __license__ = "MIT"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __maintainer__ = "-"
 __email__     = ""
 __status__     = "Test"
 __date__    = "23.01.2015"
-__description__ = "Script send files as an attachment to the VirusTotal."
+__description__ = "Script sends files as an attachment to the VirusTotal Service."
 
 
 # SCAN_FOLDER = 'd:\\Distr\\_misc\\_Misc\\test\\'
-SCAN_FOLDER = 'd:\\Distr\\_misc\\Images'
+SCAN_FOLDER = 'd:\\Distr\\VideoTools\\'
 
 
 import smtplib
@@ -36,24 +36,21 @@ class VirusTotalAttachmentSender(threading.Thread):
 
     def __init__(self, resource, q):
         '''
-            Method that initate variables
+            (class, str, Queue) -> None
 
-            (str, Queue) -> Note
-
-            As the paraments method accepts
+            Method that initate variables when instace is initially created.            
         '''
 
         threading.Thread.__init__(self)
-
         self.resource = resource
         self.q = q
         #print '[i] resource %s' % resource
 
     def form_email_with_attachment(self, filename):
         '''
-            Forms e-mail with attachment and returns it.
+            (class, str) -> str
 
-            (str) -> str
+            Forming e-mail with attachment and returns it as a result.
         '''
 
         msg = MIMEMultipart()
@@ -104,7 +101,9 @@ class VirusTotalAttachmentSender(threading.Thread):
 
     def run(self):
         '''
-            Run method that send speficied attachment
+            (class) -> None
+
+            Run method that initiates attachment sending
         '''
         self.send_attachment()
 
@@ -112,11 +111,13 @@ class SenderProcessor:
 
     def files_to_scan(self, root_folder):
         '''
-            Itereation particular
-            (str) -> (list)
+            (class, str) -> list
+
+            Intereting particular folder to create list of files for sending and scanning.
         '''
+
         f_iterator = FolderIterator()
-        print '[i] Following folder will be processed %s \n' % root_folder
+        print '[i] Following folder will be processed {}'.format(root_folder)
         folders = f_iterator.get_all_files(root_folder)
 
         _files_path = list()
@@ -129,8 +130,11 @@ class SenderProcessor:
 
     def process(self):
         '''
-            Processing files taht should be send via e-mail to the VirusTotal service.
+            (class) -> None
+
+            Processing queue of file to be send via e-mail to the VirusTotal service.
         '''
+
         q = Queue.Queue()
         threads = []
 
